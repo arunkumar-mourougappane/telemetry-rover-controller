@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# buld directories
+.build
+projectfiles
+*.py*
+BUILD
