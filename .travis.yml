@@ -1,0 +1,54 @@
+notifications:
+  email:
+    recipients:
+      - amouroug@buffalo.edu
+      - arun.mylegend1990@gmail.com
+  slack:
+    secure: qE/HIL0+8dvKIwJs3ubaerdbrXdRmvSwhXiF+vqsTdeHl1II5knVNl2V+X5FiRr1vzCAeMR9OvHNex0NXourTOJ3O9DhwI6is408nv4lto6V4qtLGgZ60xqXIFNR/Cri7nmT339dWQQmmnaJwZiWxOuUlzPd41Pyf2MiAaQMQDj3xTbzfbdFqhMm9eQC6+PZA48Z3PaQyalw5l5vnZTJdhGnm5klc3fVL6svhI4kb37jkfyVdPv0ivClBxZr7A+zVyrlwOgbZKUnJj0Sn+9d2ElfUwX98ySqX75CDB/GbNoagQ/9+18AlMSB2Unio2z2B10qnrGbC8o4oX1LB4OFrNfOQt3SOwy8An2X00afAo2kp7KTK0uREVeVwGyJ2CQ/dXhxibP2Mg5rFFuiFLAI5SL4FYiHJojrf2hUG/SvvffMbUiepmiuDY9QVUiSqsbOHJHzFpSKScOSYnLwfBADpY/8ZTPTgm3mlizYSrsrJJ/aRuYoLIrEMA67uymzB+MIfmW+n/AXe8Lrr2oLLaxRt0klVMSWiTQeBwyUS79SFuMHFlv8eVapzr8j8OYBKTg/kBA3/1b6LtVPOvm8eCZj5pVPTsi/MELBJa71AacmmYFcD/oELMG5m4Q9CUC/iSaZiCJWbBumaGpQABLVRyY/TMVdXdFEoS7rBrula9KDqlA=
+
+os:
+  - linux
+
+language: python
+
+jobs:
+  fast_finish: true
+  include:
+    - name: 9-2020-q2
+      env: GCC_URL=https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
+    - name: 7-2018-q2
+      env: GCC_URL=https://developer.arm.com/-/media/Files/downloads/gnu-rm/7-2018q2/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2?revision=bc2c96c0-14b5-4bb4-9f18-bceb4050fee7?product=GNU%20Arm%20Embedded%20Toolchain,64-bit,,Linux,7-2018-q2-update
+
+dist: bionic
+addons:
+  apt:
+    packages:
+    - libc6-i386
+    - python3
+    - python3-pip
+    - mercurial
+
+install:
+  - pushd .
+  - export CURRENT_DIR=$(pwd)
+  - cd ~
+  - mkdir arm-gcc-toolchain
+  - wget -O $HOME/arm-gcc-toolchain/gcc.tar.bz2 $GCC_URL
+  - cd arm-gcc-toolchain
+  - tar -jxf gcc.tar.bz2 --strip=1
+  - pip3 install mbed-cli
+  - cd $CURRENT_DIR
+  - mbed config -G ARM_PATH "$HOME/arm-gcc-toolchain/"
+  - mbed toolchain GCC_ARM
+  - mbed add mbed-os
+  - popd
+  - export PATH=$HOME/arm-gcc-toolchain/bin:$PATH
+
+before_script:
+  - arm-none-eabi-gcc --version
+  - mbed config --list
+  - mbed deploy
+  - pip3 install -r build_requirements.txt
+
+script:
+  - mbed compile  -c -j$(grep -c processor /proc/cpuinfo)
