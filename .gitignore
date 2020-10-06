@@ -24,15 +24,18 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
 
-# buld directories
+# build directories
 .build
 projectfiles
 *.py*
 BUILD
+BUILD/**
+
+#Editor Settings
+.vscode/**
