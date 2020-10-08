@@ -20,6 +20,6 @@
 
 ![Morpho Type Right Pinout](pinout/nucleo_f446re_morpho_right_2016_7_22.png)
 
-## IL9341 2.2" TFT 340x220 SPI
+## ILI9341 2.2" TFT 340x220 SPI
 
-![IL9341 SPI Pinout](pinout/800px-MSP2202-007.jpg)
+![ILI9341 SPI Pinout](pinout/800px-MSP2202-007.jpg)
