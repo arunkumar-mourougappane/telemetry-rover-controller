@@ -109,7 +109,10 @@ void CGraphicsWrapper::Stop()
     return;
 }
 
-void CGraphicsWrapper::drawDirection(direction_t& directionInfo, unsigned short shapeColor){}
+void CGraphicsWrapper::drawDirection(direction_t& directionInfo, unsigned short shapeColor, int orientation)
+{
+
+}
 void CGraphicsWrapper::drawLayout(){}
 void CGraphicsWrapper::drawButtonPress(direction_t& directionInfo, unsigned short shapeColor){}
 void CGraphicsWrapper::updateText(direction_t& directionInfo, unsigned short textColor){}

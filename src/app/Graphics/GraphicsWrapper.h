@@ -33,7 +33,7 @@ class CGraphicsWrapper
       void DirectionDisplayUI();
       void GraphicsDidsplayThreadHelper();
       void CheckIfDirectionChanged(direction_t& directionInfo);
-      void drawDirection(direction_t& directionInfo, unsigned short shapeColor);
+      void drawDirection(direction_t& directionInfo, unsigned short shapeColor, int orientation);
       void drawLayout();
       void drawButtonPress(direction_t& directionInfo, unsigned short shapeColor);
       void updateText(direction_t& directionInfo, unsigned short textColor);
