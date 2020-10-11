@@ -20,7 +20,6 @@
 class CGraphicsWrapper
 {
    private:
-      ILI9341 *mDisplay = new ILI9341(SPI_16, 12000000, PB_5,PB_4, PB_3, PA_10, PA_8, PB_10,"Display");
       std::atomic_bool mKeepRunning;
       std::atomic_bool mUpdateDirection;
       std::atomic_bool mUpdateText;
@@ -42,8 +41,8 @@ class CGraphicsWrapper
    public:
       void Start();
       void Stop();
-      CGraphicsWrapper();
       CGraphicsWrapper(direction_t *joypadDirection);
+      CGraphicsWrapper(){};
       ~CGraphicsWrapper();
 };
 #endif
