@@ -1,5 +1,6 @@
 #include "GraphicsWrapper.h"
 #include <rtos.h>
+#include <GraphicsDisplay.h>
 
 CGraphicsWrapper::CGraphicsWrapper(direction_t *joypadDirection) : mJoypadDirection(joypadDirection)
 {
@@ -61,8 +62,8 @@ void CGraphicsWrapper::DirectionDisplayUI()
          }
          if(mUpdateDirection ==  true)
          {
-            drawDirection(oldDirection_data, Black);
-            drawDirection(updatedDirection_data, DarkGreen);
+            drawDirection(oldDirection_data, Black, 0);
+            drawDirection(updatedDirection_data, DarkGreen, 0);
          }
          if(mUpdateText == true)
          {
@@ -71,16 +72,20 @@ void CGraphicsWrapper::DirectionDisplayUI()
          }
          if(updatedDirection_data.buttonPress == true)
          {
-            updateText(oldDirection_data, Black);
-            updateText(updatedDirection_data, DarkGreen);
+            drawButtonPress(oldDirection_data, Black);
+            drawButtonPress(updatedDirection_data, DarkGreen);
          }
+         
          updatedDirection_data.dataReady = false;
-         memcpy(&updatedDirection_data,&oldDirection_data,sizeof(oldDirection_data));
+         oldDirection_data.buttonPress = updatedDirection_data.buttonPress?true:false;
+         oldDirection_data.direction = updatedDirection_data.direction;
+         oldDirection_data.xAxisAnalog = updatedDirection_data.xAxisAnalog;
+         oldDirection_data.yAxisAnalog = updatedDirection_data.yAxisAnalog;
          mJoypadDirection->dataReady = false;
          mUpdateLayout = false;
          mUpdateDirection = false;
          mUpdateText = false;
-         ThisThread::sleep_for(20ms);
+         ThisThread::sleep_for(1ms);
       }
       else
       {
@@ -90,28 +95,55 @@ void CGraphicsWrapper::DirectionDisplayUI()
    }
 }
 
-void CGraphicsWrapper::GraphicsDidsplayThreadHelper()
+void CGraphicsWrapper::GraphicsDidsplayThreadHelper(void* graphicsWrapper)
 {
-
-    return;
+   static_cast<CGraphicsWrapper*>(graphicsWrapper)->DirectionDisplayUI();
 }
 
 void CGraphicsWrapper::Start()
 {
-    mKeepRunning = true;
-    mUpdateDirection = true;
-    mUpdateText = true;
-    mUpdateLayout = true;
+   mKeepRunning = true;
+   mUpdateDirection = true;
+   mUpdateText = true;
+   mUpdateLayout = true;
+   mControllerDirectionUI.start(Callback<void()>(CGraphicsWrapper::GraphicsDidsplayThreadHelper,this));  // callback using member function
+
 }
 
 void CGraphicsWrapper::Stop()
 {
-    return;
+   mKeepRunning = false;
+   mDisplay->cls();
+   mControllerDirectionUI.join();
 }
 
 void CGraphicsWrapper::drawDirection(direction_t& directionInfo, unsigned short shapeColor, int orientation)
 {
+   int x0,y0,x1,y1,x2,y2;
+   switch(directionInfo.direction)
+   {
+      case Direction_e::UP:
+         mDisplay->locate(100,160);
+         x0=100; y0=160;
+         x1=120; y1=180;
+         x2=140; y2=160;
+         break;
+      case Direction_e::RIGHT:
+         break;
+      case Direction_e::DOWN:
+         break;
+      case Direction_e::LEFT:
+         break;
+      case Direction_e::NONE:
+      default:
+         break;
+   }
+   mDisplay->fillTriangle(x0,y0,x1,y1,x2,y2, shapeColor);
+}
 
+CGraphicsWrapper::~CGraphicsWrapper()
+{
+   Stop();
 }
 void CGraphicsWrapper::drawLayout(){}
 void CGraphicsWrapper::drawButtonPress(direction_t& directionInfo, unsigned short shapeColor){}

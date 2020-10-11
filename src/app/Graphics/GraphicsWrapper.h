@@ -29,9 +29,10 @@ class CGraphicsWrapper
       unsigned short mForegroundColor;
       direction_t *mJoypadDirection;
       int mOrienttation;
+      Thread mControllerDirectionUI;
 
       void DirectionDisplayUI();
-      void GraphicsDidsplayThreadHelper();
+      static void GraphicsDidsplayThreadHelper(void* graphicsWrapper);
       void CheckIfDirectionChanged(direction_t& directionInfo);
       void drawDirection(direction_t& directionInfo, unsigned short shapeColor, int orientation);
       void drawLayout();
