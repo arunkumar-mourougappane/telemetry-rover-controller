@@ -2,15 +2,15 @@
 
 [HOME](README.md) | [PINOUT](PINOUT.md) | [CONNECTIONS](PIN_CONNECTIONS.md)
 
-## Interfacing IL9341 TFT to NUCLEO F446RE
+## Interfacing ILI9341 TFT to NUCLEO F446RE
 
-![IL9341 SPI Pinout](pinout/800px-MSP2202-007.jpg)
+![ILI9341 SPI Pinout](pinout/800px-MSP2202-007.jpg)
 
 ### Morpho Type Right Pinout
 
 ![Morpho Type Right Pinout](pinout/nucleo_f446re_morpho_right_2016_7_22.png)
 
-|**IL9341 Pin Label** | **IL9341 PIN#** | **Description**    | **NUCLEO F446RE PIN#** |
+|**ILI9341 Pin Label** | **ILI9341 PIN#** | **Description**    | **NUCLEO F446RE PIN#** |
 | --------------- | ---------------- | --------------------- | ----------------- |
 | VCC             | 1                | 5V/3.3V power input|         5V (Arduino pinout) |
 | GND             | 2                | Ground|                      GND (Arduino pinout) |
